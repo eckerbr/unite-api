@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import adminRoutes from "./routes/admin-routes";
 import userRoutes from "./routes/user-routes";
 import projectRoutes from "./routes/project-routes";
+import sectionRoutes from "./routes/sections-route";
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use(
 app.use("/admin", adminRoutes);
 app.use("/users", userRoutes);
 app.use("/projects", projectRoutes);
+app.use("/sections", sectionRoutes);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
     const error = {

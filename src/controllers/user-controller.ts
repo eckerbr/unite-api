@@ -1,14 +1,11 @@
-import { Response, Request, NextFunction, json } from "express";
+import { Response, Request } from "express";
 import { IResult } from "mssql";
 import { queryDB } from "../services/data-access";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { AuthorizedRequest } from "../services/auth-middleware";
 
-export const login = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
+export const login = async (req: Request, res: Response) => {
     const key: string = process.env["JWT_KEY"] || "";
     if (key === "" || key === null || key === undefined) {
         throw { message: "ERROR CODE: 0xBAADBEEF" };
@@ -33,10 +30,15 @@ export const login = async (
 
                 if (passwordMatch === true) {
                     const userData: IResult<any> | null = await queryDB(
-                        `SELECT Id, UserName, Email, Admin=(SELECT COUNT(*) AS IsAdmin
-                                                              FROM UserRoles 
-                                                             WHERE UserId='${userId}'
-                                                               AND RoleId=(SELECT Id FROM Roles WHERE Name='Admin')) 
+                        `SELECT Id,
+                                UserName, 
+                                Email, 
+                                Admin=(SELECT COUNT(*) AS IsAdmin
+                                         FROM UserRoles 
+                                        WHERE UserId='${userId}'
+                                          AND RoleId=(SELECT Id 
+                                                        FROM Roles 
+                                                       WHERE Name='Admin')) 
                            FROM Users WHERE Id='${userId}'`
                     );
 
@@ -74,4 +76,28 @@ export const login = async (
             error: error.message,
         });
     }
+};
+
+export const changePassword = async (req: AuthorizedRequest, res: Response) => {
+    return res.status(503).json({
+        message: "Under construction",
+    });
+};
+
+export const forgotPassword = async (req: Request, res: Response) => {
+    return res.status(503).json({
+        message: "Under construction",
+    });
+};
+
+export const resetPassword = async (req: Request, res: Response) => {
+    return res.status(503).json({
+        message: "Under construction",
+    });
+};
+
+export const requestAccess = async (req: Request, res: Response) => {
+    return res.status(503).json({
+        message: "Under construction",
+    });
 };

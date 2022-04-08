@@ -1,15 +1,11 @@
-import { Response, Request, NextFunction } from "express";
+import { Response } from "express";
 import { IResult } from "mssql";
 import { v4 as uuid } from "uuid";
 import bcrypt from "bcrypt";
 import { queryDB } from "../services/data-access";
-import { CustomRequest } from "../services/auth-middleware";
+import { AuthorizedRequest } from "../services/auth-middleware";
 
-export const listUsers = async (
-    req: CustomRequest,
-    res: Response,
-    next: NextFunction
-) => {
+export const listUsers = async (req: AuthorizedRequest, res: Response) => {
     console.log(req.userData);
 
     let query: string = "SELECT * FROM Users";
@@ -33,11 +29,7 @@ export const listUsers = async (
     }
 };
 
-export const getUser = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
+export const getUser = async (req: AuthorizedRequest, res: Response) => {
     const userId: string = req.params.userId;
     try {
         const queryResult: IResult<any> | null = await queryDB(
@@ -58,11 +50,7 @@ export const getUser = async (
     }
 };
 
-export const createUser = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
+export const createUser = async (req: AuthorizedRequest, res: Response) => {
     const userId: string = uuid();
     const { userName, email, password } = req.body;
 
@@ -83,11 +71,7 @@ export const createUser = async (
     }
 };
 
-export const editUser = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
+export const editUser = async (req: AuthorizedRequest, res: Response) => {
     const userId: string = req.params.userId;
     const { email, userName, active } = req.body;
 
@@ -141,11 +125,7 @@ export const editUser = async (
     }
 };
 
-export const deleteUser = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
+export const deleteUser = async (req: AuthorizedRequest, res: Response) => {
     const userId = req.params.userId;
 
     try {
@@ -176,11 +156,7 @@ export const deleteUser = async (
     }
 };
 
-export const listProjects = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
+export const listProjects = async (req: AuthorizedRequest, res: Response) => {
     let query: string = "SELECT * FROM Projects";
 
     if (req.query.showInactive !== "1") {
@@ -202,11 +178,7 @@ export const listProjects = async (
     }
 };
 
-export const getProject = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
+export const getProject = async (req: AuthorizedRequest, res: Response) => {
     const projectId: string = req.params.projectId;
     try {
         const queryResult: IResult<any> | null = await queryDB(
@@ -227,11 +199,7 @@ export const getProject = async (
     }
 };
 
-export const createProject = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
+export const createProject = async (req: AuthorizedRequest, res: Response) => {
     const projectId: string = uuid();
     const { title, description } = req.body;
 
@@ -250,11 +218,7 @@ export const createProject = async (
     }
 };
 
-export const editProject = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
+export const editProject = async (req: AuthorizedRequest, res: Response) => {
     const projectId: string = req.params.projectId;
     const { title, description, active } = req.body;
 
@@ -297,8 +261,6 @@ export const editProject = async (
             `UPDATE Projects SET ${sets.join(",")} WHERE Id='${projectId}'`
         );
 
-        //TODO: Validate query ???
-
         return res.status(200).json({
             message: "Project updated",
         });
@@ -310,11 +272,7 @@ export const editProject = async (
     }
 };
 
-export const deleteProject = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
+export const deleteProject = async (req: AuthorizedRequest, res: Response) => {
     const projectId = req.params.projectId;
 
     try {
@@ -345,42 +303,29 @@ export const deleteProject = async (
     }
 };
 
-export const addRoleToUser = (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
-    return res.status(200).json({
-        message: "Hello from AddRoleToUser",
+export const addRoleToUser = (req: AuthorizedRequest, res: Response) => {
+    return res.status(503).json({
+        message: "Under construction",
     });
 };
 
-export const removeRoleFromUser = (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
-    return res.status(200).json({
-        message: "Hello from RemoveRoleFromUser",
+export const removeRoleFromUser = (req: AuthorizedRequest, res: Response) => {
+    return res.status(503).json({
+        message: "Under construction",
     });
 };
 
-export const addUserToProject = (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
-    return res.status(200).json({
-        message: "Hello from AddUserToProject",
+export const addUserToProject = (req: AuthorizedRequest, res: Response) => {
+    return res.status(503).json({
+        message: "Under construction",
     });
 };
 
 export const removeUserFromProject = (
-    req: Request,
-    res: Response,
-    next: NextFunction
+    req: AuthorizedRequest,
+    res: Response
 ) => {
-    return res.status(200).json({
-        message: "Hello from RemoveUserFromProject",
+    return res.status(503).json({
+        message: "Under construction",
     });
 };

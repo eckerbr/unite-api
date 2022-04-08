@@ -2,12 +2,12 @@ import { Request, Response, NextFunction } from "express";
 import UserData from "../types/user-data";
 import jwt from "jsonwebtoken";
 
-export interface CustomRequest extends Request {
+export interface AuthorizedRequest extends Request {
     userData?: UserData;
 }
 
 export const adminAuth = (
-    req: CustomRequest,
+    req: AuthorizedRequest,
     res: Response,
     next: NextFunction
 ) => {
@@ -54,7 +54,7 @@ export const adminAuth = (
 };
 
 export const userAuth = (
-    req: CustomRequest,
+    req: AuthorizedRequest,
     res: Response,
     next: NextFunction
 ) => {
