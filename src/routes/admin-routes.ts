@@ -4,6 +4,7 @@ import { adminAuth } from "../services/auth-middleware";
 import * as controller from "../controllers/admin-controller";
 const adminRoutes = Router();
 
+adminRoutes.get("/roles", controller.listRoles);
 adminRoutes.get("/users/", adminAuth, controller.listUsers);
 adminRoutes.get("/users/:userId", adminAuth, controller.getUser);
 adminRoutes.post("/users/", adminAuth, controller.createUser);
@@ -26,5 +27,6 @@ adminRoutes.post(
     adminAuth,
     controller.removeUserFromProject
 );
+adminRoutes.get("/users/sysadmin/:userId", adminAuth, controller.isAdmin);
 
 export default adminRoutes;

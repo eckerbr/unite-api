@@ -32,17 +32,19 @@ export const getProject = async (req: AuthorizedRequest, res: Response) => {
     const projectId: string = req.params.projectId;
     const userId: string = req.userData!.userId;
     try {
-        const result: IResult<any> | null = await queryDB(`SELECT p.Id, 
-                                  p.Title,
-                                  p.Description, 
-                                  p.Version 
-                             FROM Projects AS p
-                            INNER JOIN ProjectUsers AS pu
-                               ON p.Id=pu.ProjectId
-                            INNER JOIN Users AS u
-                               ON pu.UserId=u.Id
-                            WHERE u.Id='${userId}'
-                              AND p.Id='${projectId}'`);
+        const result: IResult<any> | null = await queryDB(
+            `SELECT p.Id, 
+                    p.Title,
+                    p.Description, 
+                    p.Version 
+               FROM Projects AS p
+              INNER JOIN ProjectUsers AS pu
+                 ON p.Id=pu.ProjectId
+              INNER JOIN Users AS u
+                 ON pu.UserId=u.Id
+              WHERE u.Id='${userId}'
+                AND p.Id='${projectId}'`
+        );
 
         if (result !== null) {
             if (result.recordset.length > 0) {
@@ -91,24 +93,6 @@ export const getSections = async (req: AuthorizedRequest, res: Response) => {
     }
 };
 
-export const addProjectSection = (req: AuthorizedRequest, res: Response) => {
-    return res.status(503).json({
-        message: "Under construction",
-    });
-};
-
-export const editProjectSection = (req: AuthorizedRequest, res: Response) => {
-    return res.status(503).json({
-        message: "Under construction",
-    });
-};
-
-export const removeProjectSection = (req: AuthorizedRequest, res: Response) => {
-    return res.status(503).json({
-        message: "Under construction",
-    });
-};
-
 export const getProjectUsers = async (
     req: AuthorizedRequest,
     res: Response
@@ -118,7 +102,7 @@ export const getProjectUsers = async (
 
     try {
         const result: IResult<any> | null = await queryDB(`
-               SELECT u.id, u.UserName, u.Email, pu.Admin 
+               SELECT u.Id, u.UserName, u.Email, pu.Admin 
                  FROM ProjectUsers AS pu
                 INNER JOIN (SELECT p1.* 
                               FROM Projects AS p1 

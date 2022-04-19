@@ -12,5 +12,8 @@ sectionRoutes.get(
 sectionRoutes.get("/:sectionId", userAuth, controller.getSubsection);
 sectionRoutes.post("/", userAuth, controller.createSubsection);
 sectionRoutes.put("/:sectionId", userAuth, controller.editSubsection);
+sectionRoutes.delete("/:sectionId", userAuth, controller.deleteSubSection);
+
+sectionRoutes.get("/records/:sectionId", userAuth, controller.listRecords);
 
 export default sectionRoutes;
